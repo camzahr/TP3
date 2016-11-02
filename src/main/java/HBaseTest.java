@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
@@ -164,6 +165,45 @@ public class HBaseTest {
 
             System.out.println("===========show all record========");
             HBaseTest.getAllRecord(tablename);
+
+            int type;
+            Scanner scanner = new Scanner(System.in);
+
+            do {
+
+                System.out.println("Welcome to the New Facebook");
+                System.out.println("1. Add");
+                System.out.println("2. Show All");
+                System.out.println("0. Press exit to get out of the loop");
+                type = scanner.nextInt();
+
+                switch (type) {
+                    case 1:
+                        String name;
+                        String email;
+                        String age;
+
+                        System.out.println("Type name");
+                        name = scanner.next();
+                        System.out.println("Type email");
+                        email = scanner.next();
+                        System.out.println("Type age");
+                        age = scanner.next();
+                        HBaseTest.addRecord(tablename, name, "info", "age", age);
+                        HBaseTest.addRecord(tablename, name, "info", "email", email);
+                        break;
+                    case 2:
+                        HBaseTest.getAllRecord(tablename);
+                        break;
+                    default:
+                        System.out.println("");
+                        break;
+                }
+
+                System.out.println("Good choice !");
+            } while (type != 0);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
