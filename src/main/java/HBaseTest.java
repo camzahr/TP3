@@ -139,6 +139,8 @@ public class HBaseTest {
             String[] familys = { "info", "friends" };
             HBaseTest.creatTable(tablename, familys);
 
+            System.out.println("Tests Incoming...");
+
             // add record zkb
             HBaseTest.addRecord(tablename, "pierre", "info", "age", "24");
             HBaseTest.addRecord(tablename, "pierre", "info", "email", "pierre@adaltas.com");
@@ -150,9 +152,6 @@ public class HBaseTest {
             HBaseTest.addRecord(tablename, "jean", "friends", "pierre", "1990-11-26");
             HBaseTest.addRecord(tablename, "jean", "friends", "jeanne", "1995-03-01");
 
-            /*HBaseTest.addRecord(tablename, "baoniu", "grade", "", "4");
-            HBaseTest.addRecord(tablename, "baoniu", "course", "math", "89");
-*/
             System.out.println("===========get one record========");
             HBaseTest.getOneRecord(tablename, "pierre");
 
@@ -174,7 +173,8 @@ public class HBaseTest {
                 System.out.println("Welcome to the New Facebook");
                 System.out.println("1. Add");
                 System.out.println("2. Show All");
-                System.out.println("0. Press exit to get out of the loop");
+                System.out.println("3. Delete One");
+                System.out.println("0. Press 0 to exit");
                 type = scanner.nextInt();
 
                 switch (type) {
@@ -182,6 +182,8 @@ public class HBaseTest {
                         String name;
                         String email;
                         String age;
+                        String friend;
+                        String date;
 
                         System.out.println("Type name");
                         name = scanner.next();
@@ -191,12 +193,38 @@ public class HBaseTest {
                         age = scanner.next();
                         HBaseTest.addRecord(tablename, name, "info", "age", age);
                         HBaseTest.addRecord(tablename, name, "info", "email", email);
+
+                        System.out.println("Who is your best friend ?");
+                        HBaseTest.getAllRecord(tablename);
+                        friend = scanner.next();
+                        System.out.println("What is his birth date ?");
+                        date = scanner.next();
+
+                        HBaseTest.addRecord(tablename, name, "friends", friend, date);
+
                         break;
                     case 2:
                         HBaseTest.getAllRecord(tablename);
                         break;
+
+                    case 3:
+                        String currentName;
+                        HBaseTest.getAllRecord(tablename);
+                        System.out.println("Which one do you want to delete ?");
+                        currentName = scanner.next();
+                        try{
+                            HBaseTest.delRecord(tablename, currentName);
+                        }catch (IOException e){
+                            e.printStackTrace();
+                        }
+
+                        System.out.println("Well done ! You delete "+currentName);
+
+                        HBaseTest.getAllRecord(tablename);
+                        break;
+
                     default:
-                        System.out.println("");
+                        System.out.println("Good Bye !");
                         break;
                 }
 
